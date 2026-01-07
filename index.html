@@ -2,24 +2,61 @@
 <html>
 <head>
     <title>Black Tiger - TowMes™©</title>
-    <style> 
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; } 
-        /* قفل الروابط الخارجية ومنع ظهور شعارات الموقع المصدر */
-        #game a, .emulatorjs-header, .emulatorjs-footer, [style*="z-index: 9999"] { 
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; display: flex; justify-content: center; align-items: center; }
+        
+        /* إظهار صورة البطل والتنين كخلفية */
+        #custom-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('poster.jpg') no-repeat center center;
+            background-size: cover;
+            z-index: 1;
+        }
+
+        /* زر PLAY NOW بلون نيون جذاب في المنتصف */
+        .play-btn {
+            position: relative;
+            z-index: 10;
+            padding: 15px 40px;
+            font-size: 24px;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.6);
+            border: 3px solid #00f2ff; /* لون نيون أزرق */
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 0 15px #00f2ff;
+            text-transform: uppercase;
+        }
+
+        /* حذف المربع الأسود والأسهم الطفيلية */
+        iframe, .emulatorjs-preloader, #game div, .ads-container { 
             display: none !important; 
-            pointer-events: none !important; 
         }
     </style>
 </head>
 <body>
-    <div id="game" style="width:100%; height:100vh;"></div>
+    <div id="custom-bg"></div>
+    <button class="play-btn" onclick="launchGame()">PLAY NOW</button>
+    <div id="game" style="width:100%; height:100vh; display:none;"></div>
+
     <script>
-        EJS_player = '#game';
-        EJS_gameUrl = 'blktiger.zip'; 
-        EJS_core = 'arcade';
-        EJS_startOnLoaded = true;
-        EJS_showSubMenu = false; // لإخفاء القوائم التي تحتوي على روابط خارجية
+        function launchGame() {
+            document.querySelector('.play-btn').style.display = 'none';
+            document.getElementById('custom-bg').style.display = 'none';
+            document.getElementById('game').style.display = 'block';
+            
+            EJS_player = '#game';
+            EJS_gameUrl = 'blktiger.zip'; 
+            EJS_core = 'arcade';
+            EJS_startOnLoaded = true;
+            EJS_showSubMenu = false;
+
+            let s = document.createElement('script');
+            s.src = "https://www.emulatorjs.com/loader.js";
+            document.body.appendChild(s);
+        }
     </script>
-    <script src="https://www.emulatorjs.com/loader.js"></script>
 </body>
 </html>
