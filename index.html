@@ -2,20 +2,7 @@
 <html>
 <head>
     <title>Black Tiger - Zoro 2</title>
-    <style> 
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; } 
-
-        /* تَنْسِيقُ زِرِّ PLAY NOW لِيَكُونَ كَبِيراً وَمُلَوَّناً */
-        .ejs-play-button {
-            background-color: #32cd32 !important; /* لَوْنٌ أَخْضَرُ جَمِيلٌ */
-            width: 280px !important;
-            height: 100px !important;
-            font-size: 35px !important;
-            border-radius: 20px !important;
-            box-shadow: 0 0 30px #32cd32 !important;
-            border: 4px solid #ffffff !important;
-        }
-    </style>
+    <style> body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; } </style>
 </head>
 <body>
     <div id="game"></div>
@@ -23,13 +10,10 @@
         EJS_player = '#game';
         EJS_gameUrl = 'blktiger.zip'; 
         EJS_core = 'arcade';
+        EJS_startOnLoaded = true;
         
-        /* إِضَافَةُ المُلْصَقِ (poster.jpg) */
+        /* إِضَافَةُ الصُّورَةِ فَقَطْ مَعَ الحِفَاظِ عَلَى نِظَامِ الكُودِ الأَصْلِيِّ */
         EJS_gameArt = 'poster.jpg';
-        EJS_gameID = 1;
-
-        /* تَعْدِيلُ حَالَةِ التَّحْمِيلِ لِإِظْهَارِ الصُّورَةِ وَالزِّرِّ الكَبِيرِ */
-        EJS_startOnLoaded = false; 
     </script>
     <script src="https://www.emulatorjs.com/loader.js"></script>
 </body>
