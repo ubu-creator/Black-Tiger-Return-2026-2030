@@ -4,37 +4,29 @@
     <meta charset="UTF-8">
     <title>Black Tiger 1982 - TowMes™©</title>
     <style>
-        /* تنظيف الشاشة بالكامل لجعل اللعبة هي المركز */
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
         
-        /* الواجهة الافتتاحية الاحترافية */
         #hero-launcher {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            /* تأكد أن اسم الصورة في GitHub هو unnamed (1).jpg */
             background: url('unnamed (1).jpg') no-repeat center center; 
             background-size: cover;
             z-index: 99999; 
             display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
 
-        /* زر PLAY NOW بلون نيون وردي جذاب */
         .action-btn {
             padding: 15px 50px; font-size: 26px; font-weight: bold; color: #fff;
             background: rgba(0, 0, 0, 0.8);
             border: 4px solid #ff00ff; border-radius: 50px;
             cursor: pointer; box-shadow: 0 0 20px #ff00ff;
             text-transform: uppercase; transition: 0.3s;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .action-btn:hover { box-shadow: 0 0 40px #ff00ff; background: #ff00ff; }
 
-        /* سحق وحجب مشغل الفيديو والأسهم الطفيلية */
-        iframe, .emulatorjs-preloader, video, .ads-container, [class*="player"], [id*="player"] { 
-            display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important;
-        }
-
-        #arcade-screen { width: 100%; height: 100%; display: none; }
+        /* تَمَّ حَذْفُ حَجْبِ الـ iframe هُنَا لِلسَّمَاحِ لِلْمُحَاكِي بِالظُّهُورِ */
+        #arcade-screen { width: 100vw; height: 100vh; display: none; }
+        #emulator-target { width: 100%; height: 100%; }
     </style>
 </head>
 <body>
@@ -49,16 +41,16 @@
 
     <script>
         function initLegacyCore() {
-            // إخفاء الواجهة وإظهار منطقة اللعبة
+            // إخفاء الواجهة
             document.getElementById('hero-launcher').style.display = 'none';
             document.getElementById('arcade-screen').style.display = 'block';
             
-            // إعدادات المحاكي الصافية
-            EJS_player = '#emulator-target';
-            EJS_gameUrl = 'blktiger.zip'; 
-            EJS_core = 'arcade';
-            EJS_startOnLoaded = true;
-            EJS_showSubMenu = false;
+            // إعدادات المحاكي بدقة
+            window.EJS_player = '#emulator-target';
+            window.EJS_gameUrl = 'blktiger.zip'; // تأكد من وجود الملف في GitHub
+            window.EJS_core = 'arcade';
+            window.EJS_startOnLoaded = true;
+            window.EJS_pathtodata = 'https://www.emulatorjs.com/data/'; // مسار البيانات الضروري
 
             // استدعاء ملف التشغيل
             var loaderScript = document.createElement('script');
