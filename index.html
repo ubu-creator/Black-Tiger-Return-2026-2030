@@ -4,66 +4,97 @@
     <meta charset="UTF-8">
     <title>Black Tiger 1982 - TowMes™©</title>
     <style>
-        /* تنظيف الشاشة بالكامل لجعل اللعبة هي المركز */
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
-        
-        /* الواجهة الافتتاحية الاحترافية */
-        #hero-launcher {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            /* تأكد أن اسم الصورة في GitHub هو unnamed (1).jpg */
-            background: url('unnamed (1).jpg') no-repeat center center; 
+        /* إعدادات الشاشة الكاملة والخلفية */
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: hidden; 
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* إضافة الصورة التي صممناها كخلفية ثابتة قبل بدء اللعبة */
+        #bg-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://raw.githubusercontent.com/ubu-creator/Black-Tiger-Return2026/main/black_tiger_poster.jpg'); /* تأكد من رفع الصورة بنفس الاسم في GitHub */
             background-size: cover;
-            z-index: 99999; 
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background-position: center;
+            filter: brightness(0.6);
+            z-index: 1;
         }
 
-        /* زر PLAY NOW بلون نيون وردي جذاب */
-        .action-btn {
-            padding: 15px 50px; font-size: 26px; font-weight: bold; color: #fff;
-            background: rgba(0, 0, 0, 0.8);
-            border: 4px solid #ff00ff; border-radius: 50px;
-            cursor: pointer; box-shadow: 0 0 20px #ff00ff;
-            text-transform: uppercase; transition: 0.3s;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        /* زر PLAY NOW بلون نيون جذاب */
+        .play-button-custom {
+            position: relative;
+            z-index: 10;
+            padding: 20px 60px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #fff;
+            background: transparent;
+            border: 4px solid #ff00ff; /* لون نيون زهري */
+            border-radius: 50px;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 0 20px #ff00ff, inset 0 0 10px #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+            transition: 0.3s;
         }
 
-        .action-btn:hover { box-shadow: 0 0 40px #ff00ff; background: #ff00ff; }
-
-        /* سحق وحجب مشغل الفيديو والأسهم الطفيلية */
-        iframe, .emulatorjs-preloader, video, .ads-container, [class*="player"], [id*="player"] { 
-            display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important;
+        .play-button-custom:hover {
+            background: #ff00ff;
+            box-shadow: 0 0 40px #ff00ff;
         }
 
-        #arcade-screen { width: 100%; height: 100%; display: none; }
+        /* إخفاء المشغل الأسود والأسهم تماماً */
+        iframe, .emulatorjs-preloader, #game div:first-child, .ads-container { 
+            display: none !important; 
+            visibility: hidden !important; 
+        }
+
+        #game {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            display: none;
+        }
     </style>
 </head>
 <body>
 
-    <div id="hero-launcher">
-        <button class="action-btn" onclick="initLegacyCore()">PLAY NOW</button>
-    </div>
+    <div id="bg-image"></div>
 
-    <div id="arcade-screen">
-        <div id="emulator-target"></div>
-    </div>
+    <button class="play-button-custom" onclick="startLegacyGame()">PLAY NOW</button>
+
+    <div id="game"></div>
 
     <script>
-        function initLegacyCore() {
-            // إخفاء الواجهة وإظهار منطقة اللعبة
-            document.getElementById('hero-launcher').style.display = 'none';
-            document.getElementById('arcade-screen').style.display = 'block';
+        function startLegacyGame() {
+            // إخفاء الزر والخلفية وإظهار اللعبة
+            document.querySelector('.play-button-custom').style.display = 'none';
+            document.getElementById('bg-image').style.display = 'none';
+            document.getElementById('game').style.display = 'block';
             
-            // إعدادات المحاكي الصافية
-            EJS_player = '#emulator-target';
+            EJS_player = '#game';
             EJS_gameUrl = 'blktiger.zip'; 
             EJS_core = 'arcade';
             EJS_startOnLoaded = true;
             EJS_showSubMenu = false;
 
-            // استدعاء ملف التشغيل
-            var loaderScript = document.createElement('script');
-            loaderScript.src = "https://www.emulatorjs.com/loader.js";
-            document.body.appendChild(loaderScript);
+            // تحميل محرك اللعبة
+            let script = document.createElement('script');
+            script.src = "https://www.emulatorjs.com/loader.js";
+            document.body.appendChild(script);
         }
     </script>
 </body>
