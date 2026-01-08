@@ -5,16 +5,19 @@
     <style> 
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; } 
         
-        /* تَنْسِيقُ الزِّرِّ لِيَكُونَ كَبِيراً وَمُلَوَّناً جِدّاً */
+        /* 1. تَكْبِيرُ وَتَلْوِينُ زِرِّ PLAY NOW */
         .ejs-play-button {
-            background: #ff0055 !important; /* لَوْنٌ نَارِيٌّ */
-            width: 260px !important;
-            height: 90px !important;
-            font-size: 32px !important;
-            border-radius: 15px !important;
-            box-shadow: 0 0 25px #ff0055 !important;
-            border: 4px solid white !important;
+            background-color: #ff4500 !important; /* لَوْنٌ بُرْتُقَالِيٌّ نَارِيٌّ */
+            width: 240px !important;
+            height: 80px !important;
+            font-size: 28px !important;
+            border-radius: 12px !important;
+            box-shadow: 0 0 20px #ff4500 !important;
+            border: 3px solid #fff !important;
         }
+
+        /* 2. حَذْفُ الإِعْلَانَاتِ وَالـ IFRAME (الفِيدِيُو العَائِمِ) */
+        iframe, .ads, .overlay { display: none !important; }
     </style>
 </head>
 <body>
@@ -23,9 +26,14 @@
         EJS_player = '#game';
         EJS_gameUrl = 'blktiger.zip'; 
         EJS_core = 'arcade';
-        EJS_startOnLoaded = false; // يَجِبُ أَنْ يَكُونَ false لِتَظْهَرَ الصُّورَةُ وَالزِّرُّ
-        EJS_gameArt = 'poster.jpg'; // إِضَافَةُ الصُّورةِ
-        EJS_gameID = 1; 
+        
+        // 3. إِضَافَةُ الصُّورَةِ poster.jpg
+        EJS_startOnLoaded = false; 
+        EJS_gameArt = 'poster.jpg';
+        EJS_gameID = 1;
+
+        // مَنْعُ الإِعْلَانَاتِ المَصْدَرِيَّةِ
+        EJS_AdUrl = '';
     </script>
     <script src="https://www.emulatorjs.com/loader.js"></script>
 </body>
