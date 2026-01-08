@@ -1,17 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
+    <meta charset="UTF-8">
     <title>Black Tiger - Zoro 2</title>
-    <style> body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; } </style>
+    <style>
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: hidden; 
+            background: #000; 
+        }
+
+        #game { 
+            width: 100%; 
+            height: 100vh; 
+        }
+
+        /* حَذْفُ الإِعْلَانَاتِ وَالفِيدِيُوهَاتِ العَائِمَةِ الَّتِي تُشْبِهُ اليُوتِيُوب */
+        iframe, .ads-container, [id*="google_ads"], [id*="video"], .overlay {
+            display: none !important;
+            visibility: hidden !important;
+            z-index: -1 !important;
+        }
+
+        /* تَكْبِيرُ وَتَلْوِينُ زِرِّ PLAY NOW بِأَلْوَانٍ جَمِيلَةٍ */
+        #game .ejs-play-button {
+            background: linear-gradient(45deg, #ff0055, #00ffcc) !important; /* تَدَرُّجٌ لَوْنِيٌّ رَائِعٌ */
+            border: 4px solid #fff !important;
+            border-radius: 15px !important;
+            width: 250px !important; /* حَجْمٌ كَبِيرٌ */
+            height: 80px !important;
+            font-size: 30px !important; /* خَطٌّ عَرِيضٌ */
+            color: #fff !important;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5) !important;
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.8) !important;
+            cursor: pointer !important;
+            transition: transform 0.3s ease !important;
+        }
+
+        #game .ejs-play-button:hover {
+            transform: scale(1.1) !important; /* تَكْبِيرٌ عِنْدَ مُرُورِ المَاوْسِ */
+            box-shadow: 0 0 50px rgba(255, 0, 85, 0.9) !important;
+        }
+    </style>
 </head>
 <body>
+
     <div id="game"></div>
+
     <script>
         EJS_player = '#game';
         EJS_gameUrl = 'blktiger.zip'; 
         EJS_core = 'arcade';
-        EJS_startOnLoaded = true;
+        
+        // إِعْدَادَاتُ المُلْصَقِ وَتَعْطِيلُ الإِعْلَانَاتِ
+        EJS_gameID = 1; 
+        EJS_gameArt = 'poster.jpg'; // الصُّورَةُ الخَاصَّةُ بِكَ
+        EJS_startOnLoaded = false; 
+        EJS_AdUrl = ''; // مَنْعُ رَوَابِطِ الإِعْلَانَاتِ
+
+        // حَظْرُ النَّوَافِذِ المُنْبَثِقَةِ الَّتِي تَنْقُلُكَ لِمَوَاقِعَ أُخْرَى
+        window.open = function() { return null; };
     </script>
+    
     <script src="https://www.emulatorjs.com/loader.js"></script>
+
+    <script>
+        // إِزَالَةُ أَيِّ عُنْصُرٍ غَرِيبٍ يَظْهَرُ فَوْقَ الزِّرِّ بَعْدَ التَّحْمِيلِ
+        const observer = new MutationObserver(() => {
+            const extraElements = document.querySelectorAll('div:not(#game):not(script):not(style)');
+            extraElements.forEach(el => {
+                if(parseInt(window.getComputedStyle(el).zIndex) > 100) {
+                    el.remove();
+                }
+            });
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+    </script>
+
 </body>
 </html>
