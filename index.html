@@ -1,75 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
-    <title>Black Tiger - TowMes™©</title>
+    <meta charset="UTF-8">
+    <title>Black Tiger 1982 - TowMes™©</title>
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; display: flex; justify-content: center; align-items: center; }
+        /* تنظيف الشاشة بالكامل لجعل اللعبة هي المركز */
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
         
-        /* شاشة الخلفية مع الصورة */
-        #custom-bg {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: url('poster.jpg') no-repeat center center;
+        /* الواجهة الافتتاحية الاحترافية */
+        #hero-launcher {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            /* تأكد أن اسم الصورة في GitHub هو unnamed (1).jpg */
+            background: url('unnamed (1).jpg') no-repeat center center; 
             background-size: cover;
-            z-index: 10;
+            z-index: 99999; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
 
-        /* زر PLAY NOW النيون */
-        .play-btn {
-            position: relative;
-            z-index: 20;
-            padding: 15px 40px;
-            font-size: 24px;
-            color: #fff;
-            background: rgba(0, 0, 0, 0.7);
-            border: 3px solid #00f2ff;
-            border-radius: 10px;
-            cursor: pointer;
-            box-shadow: 0 0 20px #00f2ff;
-            text-transform: uppercase;
+        /* زر PLAY NOW بلون نيون وردي جذاب */
+        .action-btn {
+            padding: 15px 50px; font-size: 26px; font-weight: bold; color: #fff;
+            background: rgba(0, 0, 0, 0.8);
+            border: 4px solid #ff00ff; border-radius: 50px;
+            cursor: pointer; box-shadow: 0 0 20px #ff00ff;
+            text-transform: uppercase; transition: 0.3s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* حاوية اللعبة */
-        #game-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: 5; /* تحت زر البداية في البداية */
-            display: block;
+        .action-btn:hover { box-shadow: 0 0 40px #ff00ff; background: #ff00ff; }
+
+        /* سحق وحجب مشغل الفيديو والأسهم الطفيلية */
+        iframe, .emulatorjs-preloader, video, .ads-container, [class*="player"], [id*="player"] { 
+            display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important;
         }
 
-        /* إخفاء الأجزاء الطفيلية الخارجية فقط */
-        .emulatorjs-header, .emulatorjs-footer, .ads-container { 
-            display: none !important; 
-        }
+        #arcade-screen { width: 100%; height: 100%; display: none; }
     </style>
 </head>
 <body>
 
-    <div id="custom-bg">
-        <button class="play-btn" onclick="launchGame()">PLAY NOW</button>
+    <div id="hero-launcher">
+        <button class="action-btn" onclick="initLegacyCore()">PLAY NOW</button>
     </div>
 
-    <div id="game-container">
-        <div id="game"></div>
+    <div id="arcade-screen">
+        <div id="emulator-target"></div>
     </div>
 
     <script>
-        function launchGame() {
-            // إخفاء شاشة البداية (الخلفية والزر) تماماً
-            document.getElementById('custom-bg').style.display = 'none';
+        function initLegacyCore() {
+            // إخفاء الواجهة وإظهار منطقة اللعبة
+            document.getElementById('hero-launcher').style.display = 'none';
+            document.getElementById('arcade-screen').style.display = 'block';
             
-            // تفعيل المحاكي
-            EJS_player = '#game';
+            // إعدادات المحاكي الصافية
+            EJS_player = '#emulator-target';
             EJS_gameUrl = 'blktiger.zip'; 
             EJS_core = 'arcade';
             EJS_startOnLoaded = true;
             EJS_showSubMenu = false;
 
-            let s = document.createElement('script');
-            s.src = "https://www.emulatorjs.com/loader.js";
-            document.body.appendChild(s);
+            // استدعاء ملف التشغيل
+            var loaderScript = document.createElement('script');
+            loaderScript.src = "https://www.emulatorjs.com/loader.js";
+            document.body.appendChild(loaderScript);
         }
     </script>
 </body>
