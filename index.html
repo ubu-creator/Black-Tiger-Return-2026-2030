@@ -1,55 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Black Tiger - TowMes™©</title>
-    <style> 
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; } 
-        
-        /* 1. إخفاء المربع الأسود الطفيلي والأسهم البيضاء تماماً */
-        iframe, .emulatorjs-preloader, #game div:first-child, .ads-container { 
-            display: none !important; 
-            visibility: hidden !important; 
-        }
-
-        /* 2. تنسيق زر PLAY NOW ليصبح في منتصف الشاشة وبحجم كبير */
-        .play-button-custom {
-            display: block;
-            padding: 20px 50px;
-            font-size: 24px;
-            font-weight: bold;
-            color: #fff;
-            background: #2196F3; /* لون أزرق جذاب مثل الذي في صورتك */
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            text-transform: uppercase;
-            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
-            z-index: 9999;
-        }
-    </style>
+    <title>Black Tiger - Zoro 2</title>
+    <style> body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; } </style>
 </head>
 <body>
-    <button class="play-button-custom" onclick="startLegacyGame()">PLAY NOW</button>
-
-    <div id="game" style="width:100%; height:100vh; display:none;"></div>
-
+    <div id="game"></div>
     <script>
-        function startLegacyGame() {
-            // إخفاء الزر وإظهار اللعبة عند الضغط
-            document.querySelector('.play-button-custom').style.display = 'none';
-            document.getElementById('game').style.display = 'block';
-            
-            EJS_player = '#game';
-            EJS_gameUrl = 'blktiger.zip'; 
-            EJS_core = 'arcade';
-            EJS_startOnLoaded = true;
-            EJS_showSubMenu = false;
-
-            // تحميل المحاكي بعد الضغط على الزر
-            let script = document.createElement('script');
-            script.src = "https://www.emulatorjs.com/loader.js";
-            document.body.appendChild(script);
-        }
+        EJS_player = '#game';
+        EJS_gameUrl = 'blktiger.zip'; 
+        EJS_core = 'arcade';
+        EJS_startOnLoaded = true;
     </script>
+    <script src="https://www.emulatorjs.com/loader.js"></script>
 </body>
 </html>
