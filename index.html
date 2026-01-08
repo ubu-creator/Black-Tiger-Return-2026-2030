@@ -1,71 +1,32 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Black Tiger - Zoro 2</title>
-    <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
-        #game { width: 100%; height: 100vh; }
-
-        /* إِخْفَاءُ أَيِّ طَبَقَاتٍ إِعْلَانِيَّةٍ خَارِجِيَّةٍ مَهْمَا كَانَ مَصْدَرُهَا */
-        iframe, .ads-container, [style*="z-index: 2147483647"], div[id*="video"] {
-            display: none !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
-        }
-
-        /* تَنْسِيقُ الزِّرِّ الجَدِيدِ بِأَلْوَانٍ جَذَّابَةٍ */
+    <style> 
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; } 
+        
+        /* تَنْسِيقُ الزِّرِّ لِيَكُونَ كَبِيراً وَمُلَوَّناً جِدّاً */
         .ejs-play-button {
-            background: linear-gradient(to bottom, #ff4e50, #f9d423) !important; /* لَوْنٌ نَارِيٌّ مُمَيَّزٌ */
-            width: 280px !important;
-            height: 100px !important;
-            font-size: 35px !important;
-            border-radius: 20px !important;
-            border: 5px solid #fff !important;
-            box-shadow: 0 0 40px rgba(255, 78, 80, 0.7) !important;
-            text-transform: uppercase !important;
-            font-weight: 900 !important;
-            color: white !important;
-            cursor: pointer !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
+            background: #ff0055 !important; /* لَوْنٌ نَارِيٌّ */
+            width: 260px !important;
+            height: 90px !important;
+            font-size: 32px !important;
+            border-radius: 15px !important;
+            box-shadow: 0 0 25px #ff0055 !important;
+            border: 4px solid white !important;
         }
     </style>
 </head>
 <body>
-
     <div id="game"></div>
-
     <script>
         EJS_player = '#game';
         EJS_gameUrl = 'blktiger.zip'; 
         EJS_core = 'arcade';
-        EJS_gameID = 1;
-        EJS_gameArt = 'poster.jpg'; // تَأَكَّدْ مِنْ وُجُودِ الصُّورَةِ بِجَانِبِ الكُودِ
-        EJS_startOnLoaded = false; 
-        EJS_AdUrl = ''; 
+        EJS_startOnLoaded = false; // يَجِبُ أَنْ يَكُونَ false لِتَظْهَرَ الصُّورَةُ وَالزِّرُّ
+        EJS_gameArt = 'poster.jpg'; // إِضَافَةُ الصُّورةِ
+        EJS_gameID = 1; 
     </script>
-    
     <script src="https://www.emulatorjs.com/loader.js"></script>
-
-    <script>
-        // مُحَرِّكُ التَّحْسِينِ القَسْرِيِّ: يَنْتَظِرُ ظُهُورَ الزِّرِّ ثُمَّ يَقُومُ بِتَلْوِينِهِ
-        const fixInterval = setInterval(() => {
-            const playBtn = document.querySelector('.ejs-play-button');
-            if (playBtn) {
-                playBtn.innerHTML = "PLAY NOW"; // تَأْكِيدُ النَّصِّ
-                playBtn.style.display = "flex";
-                // حَذْفُ أَيِّ إِعْلَانَاتٍ قَدْ تَكُونُ ظَهَرَتْ فَوْقَهُ
-                const allDivs = document.querySelectorAll('div');
-                allDivs.forEach(div => {
-                    if (parseInt(window.getComputedStyle(div).zIndex) > 100 && !div.contains(playBtn)) {
-                        div.style.display = 'none';
-                    }
-                });
-            }
-        }, 500); // يَفْحَصُ كُلَّ نِصْفِ ثَانِيَةٍ
-    </script>
-
 </body>
 </html>
