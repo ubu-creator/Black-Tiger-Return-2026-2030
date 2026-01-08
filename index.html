@@ -4,45 +4,32 @@
     <meta charset="UTF-8">
     <title>Black Tiger - Zoro 2</title>
     <style>
-        body, html { 
-            margin: 0; 
-            padding: 0; 
-            width: 100%; 
-            height: 100%; 
-            overflow: hidden; 
-            background: #000; 
-        }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+        #game { width: 100%; height: 100vh; }
 
-        #game { 
-            width: 100%; 
-            height: 100vh; 
-        }
-
-        /* حَذْفُ الإِعْلَانَاتِ وَالفِيدِيُوهَاتِ العَائِمَةِ الَّتِي تُشْبِهُ اليُوتِيُوب */
-        iframe, .ads-container, [id*="google_ads"], [id*="video"], .overlay {
+        /* إِخْفَاءُ أَيِّ طَبَقَاتٍ إِعْلَانِيَّةٍ خَارِجِيَّةٍ مَهْمَا كَانَ مَصْدَرُهَا */
+        iframe, .ads-container, [style*="z-index: 2147483647"], div[id*="video"] {
             display: none !important;
-            visibility: hidden !important;
-            z-index: -1 !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
         }
 
-        /* تَكْبِيرُ وَتَلْوِينُ زِرِّ PLAY NOW بِأَلْوَانٍ جَمِيلَةٍ */
-        #game .ejs-play-button {
-            background: linear-gradient(45deg, #ff0055, #00ffcc) !important; /* تَدَرُّجٌ لَوْنِيٌّ رَائِعٌ */
-            border: 4px solid #fff !important;
-            border-radius: 15px !important;
-            width: 250px !important; /* حَجْمٌ كَبِيرٌ */
-            height: 80px !important;
-            font-size: 30px !important; /* خَطٌّ عَرِيضٌ */
-            color: #fff !important;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.5) !important;
-            box-shadow: 0 0 30px rgba(0, 255, 204, 0.8) !important;
+        /* تَنْسِيقُ الزِّرِّ الجَدِيدِ بِأَلْوَانٍ جَذَّابَةٍ */
+        .ejs-play-button {
+            background: linear-gradient(to bottom, #ff4e50, #f9d423) !important; /* لَوْنٌ نَارِيٌّ مُمَيَّزٌ */
+            width: 280px !important;
+            height: 100px !important;
+            font-size: 35px !important;
+            border-radius: 20px !important;
+            border: 5px solid #fff !important;
+            box-shadow: 0 0 40px rgba(255, 78, 80, 0.7) !important;
+            text-transform: uppercase !important;
+            font-weight: 900 !important;
+            color: white !important;
             cursor: pointer !important;
-            transition: transform 0.3s ease !important;
-        }
-
-        #game .ejs-play-button:hover {
-            transform: scale(1.1) !important; /* تَكْبِيرٌ عِنْدَ مُرُورِ المَاوْسِ */
-            box-shadow: 0 0 50px rgba(255, 0, 85, 0.9) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
         }
     </style>
 </head>
@@ -54,30 +41,30 @@
         EJS_player = '#game';
         EJS_gameUrl = 'blktiger.zip'; 
         EJS_core = 'arcade';
-        
-        // إِعْدَادَاتُ المُلْصَقِ وَتَعْطِيلُ الإِعْلَانَاتِ
-        EJS_gameID = 1; 
-        EJS_gameArt = 'poster.jpg'; // الصُّورَةُ الخَاصَّةُ بِكَ
+        EJS_gameID = 1;
+        EJS_gameArt = 'poster.jpg'; // تَأَكَّدْ مِنْ وُجُودِ الصُّورَةِ بِجَانِبِ الكُودِ
         EJS_startOnLoaded = false; 
-        EJS_AdUrl = ''; // مَنْعُ رَوَابِطِ الإِعْلَانَاتِ
-
-        // حَظْرُ النَّوَافِذِ المُنْبَثِقَةِ الَّتِي تَنْقُلُكَ لِمَوَاقِعَ أُخْرَى
-        window.open = function() { return null; };
+        EJS_AdUrl = ''; 
     </script>
     
     <script src="https://www.emulatorjs.com/loader.js"></script>
 
     <script>
-        // إِزَالَةُ أَيِّ عُنْصُرٍ غَرِيبٍ يَظْهَرُ فَوْقَ الزِّرِّ بَعْدَ التَّحْمِيلِ
-        const observer = new MutationObserver(() => {
-            const extraElements = document.querySelectorAll('div:not(#game):not(script):not(style)');
-            extraElements.forEach(el => {
-                if(parseInt(window.getComputedStyle(el).zIndex) > 100) {
-                    el.remove();
-                }
-            });
-        });
-        observer.observe(document.body, { childList: true, subtree: true });
+        // مُحَرِّكُ التَّحْسِينِ القَسْرِيِّ: يَنْتَظِرُ ظُهُورَ الزِّرِّ ثُمَّ يَقُومُ بِتَلْوِينِهِ
+        const fixInterval = setInterval(() => {
+            const playBtn = document.querySelector('.ejs-play-button');
+            if (playBtn) {
+                playBtn.innerHTML = "PLAY NOW"; // تَأْكِيدُ النَّصِّ
+                playBtn.style.display = "flex";
+                // حَذْفُ أَيِّ إِعْلَانَاتٍ قَدْ تَكُونُ ظَهَرَتْ فَوْقَهُ
+                const allDivs = document.querySelectorAll('div');
+                allDivs.forEach(div => {
+                    if (parseInt(window.getComputedStyle(div).zIndex) > 100 && !div.contains(playBtn)) {
+                        div.style.display = 'none';
+                    }
+                });
+            }
+        }, 500); // يَفْحَصُ كُلَّ نِصْفِ ثَانِيَةٍ
     </script>
 
 </body>
