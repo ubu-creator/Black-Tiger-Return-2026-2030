@@ -2,62 +2,69 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Black Tiger 1982 - TowMes™©</title>
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: #000; overflow: hidden; }
+        /* تنظيف الشاشة بالكامل لجعل اللعبة هي المركز */
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
         
-        /* واجهة الانطلاق */
+        /* الواجهة الافتتاحية الاحترافية */
         #hero-launcher {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000 url('unnamed (1).jpg') no-repeat center center; 
+            /* تأكد أن اسم الصورة في GitHub هو unnamed (1).jpg */
+            background: url('unnamed (1).jpg') no-repeat center center; 
             background-size: cover;
-            display: flex; justify-content: center; align-items: center;
-            z-index: 1000;
+            z-index: 99999; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
 
-        /* زر التشغيل */
+        /* زر PLAY NOW بلون نيون وردي جذاب */
         .action-btn {
-            padding: 20px 60px; font-size: 30px; font-weight: bold; color: #fff;
-            background: #ff00ff; border: none; border-radius: 50px;
-            cursor: pointer; box-shadow: 0 0 30px #ff00ff;
-            text-transform: uppercase; z-index: 1001;
+            padding: 15px 50px; font-size: 26px; font-weight: bold; color: #fff;
+            background: rgba(0, 0, 0, 0.8);
+            border: 4px solid #ff00ff; border-radius: 50px;
+            cursor: pointer; box-shadow: 0 0 20px #ff00ff;
+            text-transform: uppercase; transition: 0.3s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* منطقة اللعبة */
-        #game-container {
-            width: 100vw; height: 100vh;
-            display: none; /* يظهر فقط عند الضغط */
+        .action-btn:hover { box-shadow: 0 0 40px #ff00ff; background: #ff00ff; }
+
+        /* سحق وحجب مشغل الفيديو والأسهم الطفيلية */
+        iframe, .emulatorjs-preloader, video, .ads-container, [class*="player"], [id*="player"] { 
+            display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important;
         }
+
+        #arcade-screen { width: 100%; height: 100%; display: none; }
     </style>
 </head>
 <body>
 
     <div id="hero-launcher">
-        <button class="action-btn" id="start-button">PLAY NOW</button>
+        <button class="action-btn" onclick="initLegacyCore()">PLAY NOW</button>
     </div>
 
-    <div id="game-container">
-        <div id="emulator"></div>
+    <div id="arcade-screen">
+        <div id="emulator-target"></div>
     </div>
 
     <script>
-        document.getElementById('start-button').addEventListener('click', function() {
-            // إخفاء الواجهة وإظهار اللعبة
+        function initLegacyCore() {
+            // إخفاء الواجهة وإظهار منطقة اللعبة
             document.getElementById('hero-launcher').style.display = 'none';
-            document.getElementById('game-container').style.display = 'block';
+            document.getElementById('arcade-screen').style.display = 'block';
+            
+            // إعدادات المحاكي الصافية
+            EJS_player = '#emulator-target';
+            EJS_gameUrl = 'blktiger.zip'; 
+            EJS_core = 'arcade';
+            EJS_startOnLoaded = true;
+            EJS_showSubMenu = false;
 
-            // إعدادات المحاكي
-            window.EJS_player = '#emulator';
-            window.EJS_core = 'arcade'; // النواة الخاصة بألعاب الأركيد
-            window.EJS_gameUrl = 'blktiger.zip'; // اسم الملف في GitHub
-            window.EJS_pathtodata = 'https://www.emulatorjs.com/data/';
-
-            // تحميل المحاكي ديناميكياً
-            var script = document.createElement('script');
-            script.src = 'https://www.emulatorjs.com/loader.js';
-            document.body.appendChild(script);
-        });
+            // استدعاء ملف التشغيل
+            var loaderScript = document.createElement('script');
+            loaderScript.src = "https://www.emulatorjs.com/loader.js";
+            document.body.appendChild(loaderScript);
+        }
     </script>
 </body>
 </html>
