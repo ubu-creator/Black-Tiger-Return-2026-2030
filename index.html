@@ -1,88 +1,42 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Black Tiger 1982 - TowMes™©</title>
-    <style>
-        /* إعدادات الشاشة الكاملة والخلفية */
-        body, html { 
-            margin: 0; 
-            padding: 0; 
-            width: 100%; 
-            height: 100%; 
-            overflow: hidden; 
-            background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Arial', sans-serif;
-        }
-
-        /* إضافة الصورة التي صممناها كخلفية ثابتة قبل بدء اللعبة */
-        #bg-image {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://raw.githubusercontent.com/ubu-creator/Black-Tiger-Return2026/main/black_tiger_poster.jpg'); /* تأكد من رفع الصورة بنفس الاسم في GitHub */
-            background-size: cover;
-            background-position: center;
-            filter: brightness(0.6);
-            z-index: 1;
-        }
-
-        /* زر PLAY NOW بلون نيون جذاب */
-        .play-button-custom {
-            position: relative;
-            z-index: 10;
-            padding: 20px 60px;
-            font-size: 28px;
-            font-weight: bold;
-            color: #fff;
-            background: transparent;
-            border: 4px solid #ff00ff; /* لون نيون زهري */
-            border-radius: 50px;
-            cursor: pointer;
-            text-transform: uppercase;
-            box-shadow: 0 0 20px #ff00ff, inset 0 0 10px #ff00ff;
-            text-shadow: 0 0 10px #ff00ff;
-            transition: 0.3s;
-        }
-
-        .play-button-custom:hover {
-            background: #ff00ff;
-            box-shadow: 0 0 40px #ff00ff;
-        }
-
-        /* إخفاء المشغل الأسود والأسهم تماماً */
+    <title>Black Tiger - TowMes™©</title>
+    <style> 
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; } 
+        
+        /* 1. إخفاء المربع الأسود الطفيلي والأسهم البيضاء تماماً */
         iframe, .emulatorjs-preloader, #game div:first-child, .ads-container { 
             display: none !important; 
             visibility: hidden !important; 
         }
 
-        #game {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 5;
-            display: none;
+        /* 2. تنسيق زر PLAY NOW ليصبح في منتصف الشاشة وبحجم كبير */
+        .play-button-custom {
+            display: block;
+            padding: 20px 50px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            background: #2196F3; /* لون أزرق جذاب مثل الذي في صورتك */
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+            z-index: 9999;
         }
     </style>
 </head>
 <body>
-
-    <div id="bg-image"></div>
-
     <button class="play-button-custom" onclick="startLegacyGame()">PLAY NOW</button>
 
-    <div id="game"></div>
+    <div id="game" style="width:100%; height:100vh; display:none;"></div>
 
     <script>
         function startLegacyGame() {
-            // إخفاء الزر والخلفية وإظهار اللعبة
+            // إخفاء الزر وإظهار اللعبة عند الضغط
             document.querySelector('.play-button-custom').style.display = 'none';
-            document.getElementById('bg-image').style.display = 'none';
             document.getElementById('game').style.display = 'block';
             
             EJS_player = '#game';
@@ -91,7 +45,7 @@
             EJS_startOnLoaded = true;
             EJS_showSubMenu = false;
 
-            // تحميل محرك اللعبة
+            // تحميل المحاكي بعد الضغط على الزر
             let script = document.createElement('script');
             script.src = "https://www.emulatorjs.com/loader.js";
             document.body.appendChild(script);
