@@ -5,48 +5,62 @@
     <style>
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; display: flex; justify-content: center; align-items: center; }
         
-        /* إظهار صورة البطل والتنين كخلفية */
+        /* شاشة الخلفية مع الصورة */
         #custom-bg {
             position: absolute;
             width: 100%;
             height: 100%;
             background: url('poster.jpg') no-repeat center center;
             background-size: cover;
-            z-index: 1;
+            z-index: 10;
         }
 
-        /* زر PLAY NOW بلون نيون جذاب في المنتصف */
+        /* زر PLAY NOW النيون */
         .play-btn {
             position: relative;
-            z-index: 10;
+            z-index: 20;
             padding: 15px 40px;
             font-size: 24px;
             color: #fff;
-            background: rgba(0, 0, 0, 0.6);
-            border: 3px solid #00f2ff; /* لون نيون أزرق */
+            background: rgba(0, 0, 0, 0.7);
+            border: 3px solid #00f2ff;
             border-radius: 10px;
             cursor: pointer;
-            box-shadow: 0 0 15px #00f2ff;
+            box-shadow: 0 0 20px #00f2ff;
             text-transform: uppercase;
         }
 
-        /* حذف المربع الأسود والأسهم الطفيلية */
-        iframe, .emulatorjs-preloader, #game div, .ads-container { 
+        /* حاوية اللعبة */
+        #game-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 5; /* تحت زر البداية في البداية */
+            display: block;
+        }
+
+        /* إخفاء الأجزاء الطفيلية الخارجية فقط */
+        .emulatorjs-header, .emulatorjs-footer, .ads-container { 
             display: none !important; 
         }
     </style>
 </head>
 <body>
-    <div id="custom-bg"></div>
-    <button class="play-btn" onclick="launchGame()">PLAY NOW</button>
-    <div id="game" style="width:100%; height:100vh; display:none;"></div>
+
+    <div id="custom-bg">
+        <button class="play-btn" onclick="launchGame()">PLAY NOW</button>
+    </div>
+
+    <div id="game-container">
+        <div id="game"></div>
+    </div>
 
     <script>
         function launchGame() {
-            document.querySelector('.play-btn').style.display = 'none';
+            // إخفاء شاشة البداية (الخلفية والزر) تماماً
             document.getElementById('custom-bg').style.display = 'none';
-            document.getElementById('game').style.display = 'block';
             
+            // تفعيل المحاكي
             EJS_player = '#game';
             EJS_gameUrl = 'blktiger.zip'; 
             EJS_core = 'arcade';
