@@ -1,17 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Black Tiger - Zoro 2</title>
+    <title>Black Tiger - Zoro 2 Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style> 
-        /* إلغاء الحواف وجعل الخلفية سوداء فخمة */
+        /* الخلفية الحمراء المغلوقة مثل ألعاب اليونيتي */
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
-            overflow: hidden; background: #000; 
+            overflow: hidden; 
+            background: radial-gradient(circle, #8b0000 0%, #000000 100%); 
         } 
+
+        /* حاوية زر Play Now العملاق */
+        #launch-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 100; background: rgba(0,0,0,0.2);
+        }
+
+        /* تصميم الزر الكبير جداً */
+        .big-play-btn {
+            padding: 40px 80px; /* حجم ضخم */
+            font-size: 40px;
+            font-weight: 900;
+            color: #ffffff;
+            background: linear-gradient(to bottom, #ff0000, #4a0000);
+            border: 5px solid #fff;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 0 50px #ff0000;
+            text-transform: uppercase;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 30px #ff0000; }
+            50% { transform: scale(1.1); box-shadow: 0 0 60px #ff0000; }
+            100% { transform: scale(1); box-shadow: 0 0 30px #ff0000; }
+        }
+
         #game { width: 100%; height: 100%; }
     </style>
 </head>
-<body onclick="startFullScreen()">
+<body>
+
+    <div id="launch-layer">
+        <button class="big-play-btn" onclick="goFullAndStart()">PLAY NOW</button>
+    </div>
 
     <div id="game"></div>
 
@@ -20,19 +55,21 @@
         EJS_gameUrl = 'blktiger.zip'; 
         EJS_core = 'arcade';
         EJS_startOnLoaded = true;
+        EJS_color = '#8b0000';
 
-        /* --- إعدادات الألوان والإبهار الجديدة --- */
-        EJS_color = '#8b0000'; // تغيير لون واجهة الإيميولاتور للأحمر المغلوق
-        EJS_backgroundColor = '#000000'; // خلفية المحرك سوداء
-        EJS_AdUrl = ''; // منع أي إعلانات
-        EJS_padding = 0; // تمدد اللعبة لأقصى الحدود
-
-        /* --- دالة الفول سكرين عند أول لمسة --- */
-        function startFullScreen() {
+        function goFullAndStart() {
+            // 1. إجبار الفول سكرين فورا
             var el = document.documentElement;
-            var requestMethod = el.requestFullScreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullScreen;
-            if (requestMethod) { 
-                requestMethod.call(el);
+            if (el.requestFullscreen) { el.requestFullscreen(); }
+            else if (el.webkitRequestFullscreen) { el.webkitRequestFullscreen(); }
+            else if (el.msRequestFullscreen) { el.msRequestFullscreen(); }
+
+            // 2. إخفاء الزر والطبقة الحمراء
+            document.getElementById('launch-layer').style.display = 'none';
+
+            // 3. تشغيل اللعبة إذا كانت متوقفة
+            if (window.EJS_emulator) {
+                window.EJS_emulator.resume();
             }
         }
     </script>
