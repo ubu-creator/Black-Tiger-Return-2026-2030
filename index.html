@@ -1,40 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Black Tiger - Zoro 2 Pro Edition</title>
+    <title>Black Tiger - Zoro 2</title>
     <style> 
-        /* تصميم انسيابي يمنع أي فراغات بيضاء */
+        /* إلغاء الحواف وجعل الخلفية سوداء فخمة */
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
             overflow: hidden; background: #000; 
         } 
-        #game { width: 100vw; height: 100vh; }
+        #game { width: 100%; height: 100%; }
     </style>
 </head>
-<body onclick="launchZoro2Mode()">
+<body onclick="startFullScreen()">
 
     <div id="game"></div>
 
     <script>
-        // الإبهار يبدأ من هنا: تغيير الإيميولاتور إلى الأقوى
         EJS_player = '#game';
         EJS_gameUrl = 'blktiger.zip'; 
-        EJS_core = 'mame2003'; // تم التغيير إلى إيميولاتور الأركيد المطور
+        EJS_core = 'arcade';
         EJS_startOnLoaded = true;
-        EJS_mouse = false; // لضمان عدم ظهور سهم الماوس المزعج على الهاتف
-        
-        // وظيفة الإبهار: فول سكرين + تشغيل فوري
-        function launchZoro2Mode() {
-            var element = document.documentElement;
-            if (element.requestFullscreen) { element.requestFullscreen(); }
-            else if (element.webkitRequestFullscreen) { element.webkitRequestFullscreen(); }
-            else if (element.mozRequestFullScreen) { element.mozRequestFullScreen(); }
-            else if (element.msRequestFullscreen) { element.msRequestFullscreen(); }
+
+        /* --- إعدادات الألوان والإبهار الجديدة --- */
+        EJS_color = '#8b0000'; // تغيير لون واجهة الإيميولاتور للأحمر المغلوق
+        EJS_backgroundColor = '#000000'; // خلفية المحرك سوداء
+        EJS_AdUrl = ''; // منع أي إعلانات
+        EJS_padding = 0; // تمدد اللعبة لأقصى الحدود
+
+        /* --- دالة الفول سكرين عند أول لمسة --- */
+        function startFullScreen() {
+            var el = document.documentElement;
+            var requestMethod = el.requestFullScreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullScreen;
+            if (requestMethod) { 
+                requestMethod.call(el);
+            }
         }
     </script>
-    
     <script src="https://www.emulatorjs.com/loader.js"></script>
-
 </body>
 </html>
