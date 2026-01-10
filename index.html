@@ -1,52 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Black Tiger - Zoro 2 Pro</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Black Tiger - Zoro 2</title>
     <style> 
-        /* الخلفية الحمراء المغلوقة مثل ألعاب اليونيتي */
-        body, html { 
-            margin: 0; padding: 0; width: 100%; height: 100%; 
-            overflow: hidden; 
-            background: radial-gradient(circle, #8b0000 0%, #000000 100%); 
-        } 
-
-        /* حاوية زر Play Now العملاق */
-        #launch-layer {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; align-items: center; justify-content: center;
-            z-index: 100; background: rgba(0,0,0,0.2);
-        }
-
-        /* تصميم الزر الكبير جداً */
-        .big-play-btn {
-            padding: 40px 80px; /* حجم ضخم */
-            font-size: 40px;
-            font-weight: 900;
-            color: #ffffff;
-            background: linear-gradient(to bottom, #ff0000, #4a0000);
-            border: 5px solid #fff;
-            border-radius: 20px;
-            cursor: pointer;
-            box-shadow: 0 0 50px #ff0000;
-            text-transform: uppercase;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 30px #ff0000; }
-            50% { transform: scale(1.1); box-shadow: 0 0 60px #ff0000; }
-            100% { transform: scale(1); box-shadow: 0 0 30px #ff0000; }
-        }
-
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; } 
         #game { width: 100%; height: 100%; }
+
+        /* زِرُّ الفُول سْكْرِين الاِحْتِرَافِيُّ */
+        #fs-btn {
+            position: fixed; top: 10px; right: 10px; z-index: 999;
+            padding: 10px 15px; background: #8b0000; color: white;
+            border: 2px solid white; border-radius: 5px; cursor: pointer;
+            font-weight: bold; font-family: sans-serif;
+        }
+
+        /* سَاعَةُ التَّوْقِيتِ الحَيَّةُ */
+        #clock {
+            position: fixed; top: 10px; left: 10px; z-index: 999;
+            color: #ff0000; font-family: monospace; font-size: 18px;
+            font-weight: bold; text-shadow: 2px 2px #000;
+        }
     </style>
 </head>
 <body>
-
-    <div id="launch-layer">
-        <button class="big-play-btn" onclick="goFullAndStart()">PLAY NOW</button>
-    </div>
+    <div id="clock">00:00:00</div>
+    <button id="fs-btn" onclick="toggleFullScreen()">FULL SCREEN</button>
 
     <div id="game"></div>
 
@@ -55,23 +33,30 @@
         EJS_gameUrl = 'blktiger.zip'; 
         EJS_core = 'arcade';
         EJS_startOnLoaded = true;
-        EJS_color = '#8b0000';
 
-        function goFullAndStart() {
-            // 1. إجبار الفول سكرين فورا
-            var el = document.documentElement;
-            if (el.requestFullscreen) { el.requestFullscreen(); }
-            else if (el.webkitRequestFullscreen) { el.webkitRequestFullscreen(); }
-            else if (el.msRequestFullscreen) { el.msRequestFullscreen(); }
-
-            // 2. إخفاء الزر والطبقة الحمراء
-            document.getElementById('launch-layer').style.display = 'none';
-
-            // 3. تشغيل اللعبة إذا كانت متوقفة
-            if (window.EJS_emulator) {
-                window.EJS_emulator.resume();
+        // دَالَّةُ تَفْعِيلِ الفُول سْكْرِين
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+                document.getElementById('fs-btn').innerText = "EXIT FS";
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                    document.getElementById('fs-btn').innerText = "FULL SCREEN";
+                }
             }
         }
+
+        // دَالَّةُ التَّوْقِيتِ (السَّاعَة)
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.getHours().toString().padStart(2, '0') + ":" + 
+                               now.getMinutes().toString().padStart(2, '0') + ":" + 
+                               now.getSeconds().toString().padStart(2, '0');
+            document.getElementById('clock').innerText = timeString;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
     </script>
     <script src="https://www.emulatorjs.com/loader.js"></script>
 </body>
