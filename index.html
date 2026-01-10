@@ -6,25 +6,37 @@
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; } 
         #game { width: 100%; height: 100%; }
 
-        /* زِرُّ الفُول سْكْرِين الاِحْتِرَافِيُّ */
-        #fs-btn {
-            position: fixed; top: 10px; right: 10px; z-index: 999;
-            padding: 10px 15px; background: #8b0000; color: white;
-            border: 2px solid white; border-radius: 5px; cursor: pointer;
-            font-weight: bold; font-family: sans-serif;
+        /* حاوية الأزرار في جهة اليسار لمنع التداخل */
+        .controls-container {
+            position: fixed; top: 10px; left: 10px; z-index: 9999;
+            display: flex; flex-direction: column; gap: 8px; /* مسافة بين العناصر */
         }
 
-        /* سَاعَةُ التَّوْقِيتِ الحَيَّةُ */
+        /* تنسيق الساعة */
         #clock {
-            position: fixed; top: 10px; left: 10px; z-index: 999;
-            color: #ff0000; font-family: monospace; font-size: 18px;
+            color: #ff0000; font-family: monospace; font-size: 20px;
             font-weight: bold; text-shadow: 2px 2px #000;
+            background: rgba(0, 0, 0, 0.5); padding: 5px; border-radius: 5px;
         }
+
+        /* تنسيق الأزرار (فول سكرين وبوز) */
+        .game-btn {
+            padding: 10px; background: #8b0000; color: white;
+            border: 2px solid white; border-radius: 8px; cursor: pointer;
+            font-weight: bold; font-family: sans-serif; font-size: 14px;
+            text-align: center; box-shadow: 2px 2px 5px #000;
+        }
+
+        .game-btn:active { background: #ff0000; transform: scale(0.95); }
     </style>
 </head>
 <body>
-    <div id="clock">00:00:00</div>
-    <button id="fs-btn" onclick="toggleFullScreen()">FULL SCREEN</button>
+
+    <div class="controls-container">
+        <div id="clock">00:00:00</div>
+        <button class="game-btn" onclick="toggleFullScreen()">FULL SCREEN</button>
+        <button class="game-btn" onclick="togglePause()">PAUSE / RESUME</button>
+    </div>
 
     <div id="game"></div>
 
@@ -34,20 +46,27 @@
         EJS_core = 'arcade';
         EJS_startOnLoaded = true;
 
-        // دَالَّةُ تَفْعِيلِ الفُول سْكْرِين
+        // دالة الفول سكرين
         function toggleFullScreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen();
-                document.getElementById('fs-btn').innerText = "EXIT FS";
             } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                    document.getElementById('fs-btn').innerText = "FULL SCREEN";
+                if (document.exitFullscreen) { document.exitFullscreen(); }
+            }
+        }
+
+        // دالة الإيقاف المؤقت (Pause)
+        function togglePause() {
+            if (window.EJS_emulator) {
+                if (window.EJS_emulator.isPaused()) {
+                    window.EJS_emulator.resume();
+                } else {
+                    window.EJS_emulator.pause();
                 }
             }
         }
 
-        // دَالَّةُ التَّوْقِيتِ (السَّاعَة)
+        // تحديث الساعة
         function updateClock() {
             const now = new Date();
             const timeString = now.getHours().toString().padStart(2, '0') + ":" + 
