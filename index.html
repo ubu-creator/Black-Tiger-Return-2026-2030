@@ -1,77 +1,32 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Black Tiger - Zoro 2</title>
-    <style>
-        body, html { 
-            margin: 0; padding: 0; width: 100%; height: 100%; 
-            overflow: hidden; background: #000; 
-        }
-        
-        /* صفحة الانطلاق الحمراء الداكنة */
-        #splash {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, #8b0000 0%, #1a0000 100%);
-            display: flex; align-items: center; justify-content: center;
-            z-index: 9999;
-        }
-
-        /* زر PLAY NOW الاحترافي */
-        #play-btn {
-            padding: 25px 60px;
-            font-size: 30px;
-            font-weight: bold;
-            color: #fff;
-            background: #ff0000;
-            border: 4px solid #fff;
-            border-radius: 15px;
-            cursor: pointer;
-            box-shadow: 0 0 30px #ff0000;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        #game { width: 100%; height: 100vh; }
+    <style> 
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; } 
+        #game { width: 100%; height: 100%; }
     </style>
 </head>
-<body>
-
-    <div id="splash">
-        <button id="play-btn" onclick="startApp()">PLAY NOW</button>
-    </div>
-
+<body onclick="enableFullScreen()">
     <div id="game"></div>
-
     <script>
-        // إعدادات المحرك الأصلية الخاصة بك
         EJS_player = '#game';
         EJS_gameUrl = 'blktiger.zip'; 
         EJS_core = 'arcade';
-        EJS_startOnLoaded = true; // نتركها true لضمان التحميل الخلفي
+        EJS_startOnLoaded = true;
 
-        function startApp() {
-            // 1. تفعيل الفول سكرين
-            var elem = document.documentElement;
-            if (elem.requestFullscreen) { elem.requestFullscreen(); }
-            else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
+        // دالة تفعيل الشاشة الكاملة عند أول لمسة
+        function enableFullScreen() {
+            var doc = window.document;
+            var docEl = doc.documentElement;
 
-            // 2. إخفاء شاشة الانطلاق
-            document.getElementById('splash').style.display = 'none';
+            var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
 
-            // 3. التأكد من أن المحرك يعمل
-            if (window.EJS_emulator) {
-                window.EJS_emulator.resume();
+            if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+                requestFullScreen.call(docEl);
             }
         }
     </script>
-    
     <script src="https://www.emulatorjs.com/loader.js"></script>
 </body>
 </html>
