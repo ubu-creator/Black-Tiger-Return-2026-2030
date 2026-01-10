@@ -1,41 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
+    <meta charset="UTF-8">
     <title>Black Tiger - Zoro 2</title>
     <style> 
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; } 
         #game { width: 100%; height: 100%; }
 
-        /* حاوية الأزرار في جهة اليسار لمنع التداخل */
-        .controls-container {
-            position: fixed; top: 10px; left: 10px; z-index: 9999;
-            display: flex; flex-direction: column; gap: 8px; /* مسافة بين العناصر */
-        }
-
-        /* تنسيق الساعة */
+        /* الساعة - باللون الأحمر الناري */
         #clock {
-            color: #ff0000; font-family: monospace; font-size: 20px;
+            position: fixed; top: 10px; left: 10px; z-index: 9999;
+            color: #ff0000; font-family: 'Courier New', monospace; font-size: 18px;
             font-weight: bold; text-shadow: 2px 2px #000;
-            background: rgba(0, 0, 0, 0.5); padding: 5px; border-radius: 5px;
+            background: rgba(0, 0, 0, 0.5); padding: 5px 10px; border-radius: 4px;
+            pointer-events: none;
         }
 
-        /* تنسيق الأزرار (فول سكرين وبوز) */
-        .game-btn {
-            padding: 10px; background: #8b0000; color: white;
-            border: 2px solid white; border-radius: 8px; cursor: pointer;
-            font-weight: bold; font-family: sans-serif; font-size: 14px;
-            text-align: center; box-shadow: 2px 2px 5px #000;
+        /* زر الفول سكرين العائم والموضح باللغتين */
+        #fs-btn {
+            position: fixed; top: 70px; left: 15px; z-index: 10000;
+            width: 85px; height: 85px; /* كبرنا الحجم قليلاً ليناسب النص */
+            background: rgba(139, 0, 0, 0.85); 
+            color: white; border: 2px solid #ffffff; 
+            border-radius: 50%; cursor: move;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: bold; font-family: 'Arial', sans-serif;
+            text-align: center; line-height: 1.2;
+            touch-action: none; user-select: none;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+            animation: pulse-border 2s infinite;
         }
 
-        .game-btn:active { background: #ff0000; transform: scale(0.95); }
+        #fs-btn span { display: block; }
+
+        @keyframes pulse-border {
+            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+            70% { box-shadow: 0 0 0 12px rgba(255, 255, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+        }
     </style>
 </head>
 <body>
 
-    <div class="controls-container">
-        <div id="clock">00:00:00</div>
-        <button class="game-btn" onclick="toggleFullScreen()">FULL SCREEN</button>
-        <button class="game-btn" onclick="togglePause()">PAUSE / RESUME</button>
+    <div id="clock">00:00:00</div>
+    
+    <div id="fs-btn">
+        <span>FULL SCREEN</span>
+        <hr style="width:80%; border:0.5px solid rgba(255,255,255,0.3); margin: 3px 0;">
+        <span>تَكْبِيرُ الشَّاشَةِ</span>
     </div>
 
     <div id="game"></div>
@@ -46,33 +58,48 @@
         EJS_core = 'arcade';
         EJS_startOnLoaded = true;
 
-        // دالة الفول سكرين
+        const fsBtn = document.getElementById('fs-btn');
+        let isDragging = false;
+        let startX, startY;
+
+        fsBtn.addEventListener('touchstart', (e) => {
+            isDragging = false;
+            startX = e.touches[0].clientX - fsBtn.offsetLeft;
+            startY = e.touches[0].clientY - fsBtn.offsetTop;
+        });
+
+        fsBtn.addEventListener('touchmove', (e) => {
+            isDragging = true;
+            let x = e.touches[0].clientX - startX;
+            let y = e.touches[0].clientY - startY;
+            
+            // منع خروج الزر عن الشاشة
+            x = Math.max(0, Math.min(x, window.innerWidth - 85));
+            y = Math.max(0, Math.min(y, window.innerHeight - 85));
+            
+            fsBtn.style.left = x + 'px';
+            fsBtn.style.top = y + 'px';
+        });
+
+        fsBtn.addEventListener('touchend', (e) => {
+            if (!isDragging) {
+                toggleFullScreen();
+            }
+        });
+
         function toggleFullScreen() {
             if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen();
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error("Error: ", err);
+                });
             } else {
-                if (document.exitFullscreen) { document.exitFullscreen(); }
+                if (document.exitFullscreen) document.exitFullscreen();
             }
         }
 
-        // دالة الإيقاف المؤقت (Pause)
-        function togglePause() {
-            if (window.EJS_emulator) {
-                if (window.EJS_emulator.isPaused()) {
-                    window.EJS_emulator.resume();
-                } else {
-                    window.EJS_emulator.pause();
-                }
-            }
-        }
-
-        // تحديث الساعة
         function updateClock() {
             const now = new Date();
-            const timeString = now.getHours().toString().padStart(2, '0') + ":" + 
-                               now.getMinutes().toString().padStart(2, '0') + ":" + 
-                               now.getSeconds().toString().padStart(2, '0');
-            document.getElementById('clock').innerText = timeString;
+            document.getElementById('clock').innerText = now.toLocaleTimeString('en-GB', { hour12: false });
         }
         setInterval(updateClock, 1000);
         updateClock();
