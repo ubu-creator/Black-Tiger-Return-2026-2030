@@ -3,103 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Black Tiger - Zoro 2 Edition</title>
+    <title>Black Tiger - Zoro 2</title>
     <style>
-        /* إعدادات الخلفية الحمراء الداكنة (مثل Unity) */
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
-            overflow: hidden; 
-            background: radial-gradient(circle, #5e0000 0%, #1a0000 100%); 
-            font-family: sans-serif;
+            overflow: hidden; background: #000; 
         }
-
-        /* حاوية اللعبة */
-        #game { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
-
-        /* صفحة الانطلاق الاحترافية (Splash Screen) */
+        
+        /* صفحة الانطلاق الحمراء الداكنة */
         #splash {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, #8b0000 0%, #000000 100%);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 9999; transition: opacity 0.8s ease;
+            background: radial-gradient(circle, #8b0000 0%, #1a0000 100%);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999;
         }
 
-        /* زر PLAY NOW الضخم والمشع */
+        /* زر PLAY NOW الاحترافي */
         #play-btn {
-            padding: 20px 50px;
-            font-size: 28px;
+            padding: 25px 60px;
+            font-size: 30px;
             font-weight: bold;
-            color: white;
-            background: linear-gradient(to bottom, #ff0000 0%, #8b0000 100%);
-            border: 3px solid #ffcc00;
-            border-radius: 50px;
+            color: #fff;
+            background: #ff0000;
+            border: 4px solid #fff;
+            border-radius: 15px;
             cursor: pointer;
-            box-shadow: 0 0 20px #ff0000;
-            text-transform: uppercase;
+            box-shadow: 0 0 30px #ff0000;
             animation: pulse 1.5s infinite;
-            display: none; /* يظهر فقط بعد تحميل اللعبة */
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 20px #ff0000; }
-            50% { transform: scale(1.05); box-shadow: 0 0 40px #ff4444; }
-            100% { transform: scale(1); box-shadow: 0 0 20px #ff0000; }
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
-        /* إخفاء أي عناصر دخيلة أو إعلانات */
-        iframe, .ads, ins, #amazon-root { display: none !important; visibility: hidden !important; }
+        #game { width: 100%; height: 100vh; }
     </style>
 </head>
 <body>
 
     <div id="splash">
-        <img src="tiger_logo.png" alt="Black Tiger" style="width: 250px; margin-bottom: 30px; filter: drop-shadow(0 0 15px red);">
-        <button id="play-btn" onclick="startGame()">PLAY NOW</button>
-        <div id="loading-text" style="color: white; margin-top: 10px;">LOADING ASSETS...</div>
+        <button id="play-btn" onclick="startApp()">PLAY NOW</button>
     </div>
 
     <div id="game"></div>
 
     <script>
-        // إعدادات المحرك
+        // إعدادات المحرك الأصلية الخاصة بك
         EJS_player = '#game';
         EJS_gameUrl = 'blktiger.zip'; 
         EJS_core = 'arcade';
-        EJS_startOnLoaded = false; // سنبدأ يدويًا لضمان الفول سكرين
-        EJS_DEBUG_XX = false; // لتعطيل أي رسائل برمجية دخيلة
-        
-        // إظهار زر البداية بعد تحميل المحرك
-        window.addEventListener('load', function() {
-            setTimeout(() => {
-                document.getElementById('loading-text').style.display = 'none';
-                document.getElementById('play-btn').style.display = 'block';
-            }, 2000);
-        });
+        EJS_startOnLoaded = true; // نتركها true لضمان التحميل الخلفي
 
-        function startGame() {
-            // 1. تفعيل الفول سكرين الإجباري
+        function startApp() {
+            // 1. تفعيل الفول سكرين
             var elem = document.documentElement;
             if (elem.requestFullscreen) { elem.requestFullscreen(); }
             else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
-            else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); }
 
-            // 2. إخفاء صفحة الانطلاق
-            document.getElementById('splash').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('splash').style.display = 'none';
-            }, 800);
+            // 2. إخفاء شاشة الانطلاق
+            document.getElementById('splash').style.display = 'none';
 
-            // 3. تشغيل اللعبة
-            if (typeof EJS_emulator !== 'undefined') {
-                EJS_emulator.start();
-            } else {
-                // إذا لم يتم تعريف المحرك بعد، نقوم بعمل لود مباشر
-                location.reload(); 
+            // 3. التأكد من أن المحرك يعمل
+            if (window.EJS_emulator) {
+                window.EJS_emulator.resume();
             }
         }
     </script>
-
+    
     <script src="https://www.emulatorjs.com/loader.js"></script>
-
 </body>
 </html>
